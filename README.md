@@ -4,6 +4,14 @@ Kandoの円形メニューにMagic Trackpadの触覚フィードバックを追�
 
 Kando本体の改造は不要です。ローカルWebSocketでメニュー操作を購読し、Appleの公開AppKit APIで触覚を要求します。Kandoの公式製品ではありません。
 
+## ダウンロード
+
+[GitHub Releases](https://github.com/shiroinock/kando-haptics/releases/latest)から `Kando-Haptics-*-macOS-arm64.zip` をダウンロードして展開し、`Kando Haptics.app` をApplicationsへ移動してください。Apple Silicon向けです。Intel版はまだ配布していません。
+
+配布バイナリはad-hoc署名で、Developer ID署名・Appleの公証はありません。初回起動時にmacOSが実行をブロックする場合があります。ダウンロード元を確認したうえで、システム設定の「プライバシーとセキュリティ」で「このまま開く」を選びます。手順は[Appleの案内](https://support.apple.com/ja-jp/102445)を参照してください。
+
+リリースにはZIPのSHA-256を記載した `SHA256SUMS.txt` も添付します。両方を同じフォルダに保存して `shasum -a 256 -c SHA256SUMS.txt` で照合できます。
+
 ## 起動
 
 1. [Kando](https://kando.menu/) 3.xを起動します。この試作はWebSocket API v2専用です。
@@ -50,6 +58,14 @@ open "Kando Haptics.app"
 連携テストはビルド後に `python3 Tests/mock_ipc_test.py` で実行できます。Python 3の標準ライブラリだけを使用し、実際の触覚は要求しません。
 
 `build.sh` は13ケースのルーティングテストも実行します。`--diagnostics-only` は触覚を要求せず、イベントの処理結果だけを表示する開発用オプションです。
+
+## 配布用ZIPの作成
+
+```sh
+bash scripts/package-release.sh
+```
+
+一時ディレクトリでビルド・ルーティングテスト・署名検証を実行し、`dist/` にアプリだけを含むZIPと `SHA256SUMS.txt` を生成します。アプリ内にMITライセンスを同梱します。生成物はGit管理対象外です。
 
 ## 調査元
 

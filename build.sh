@@ -4,7 +4,8 @@ cd "$(dirname "$0")"
 cache_dir=$(mktemp -d "${TMPDIR:-/tmp}/kando-haptics-build.XXXXXX")
 trap 'rm -rf "$cache_dir"' EXIT
 app_dir="Kando Haptics.app/Contents"
-mkdir -p "$app_dir/MacOS"
+mkdir -p "$app_dir/MacOS" "$app_dir/Resources"
+cp LICENSE "$app_dir/Resources/LICENSE"
 swiftc -swift-version 5 -O -target "$(uname -m)-apple-macos13.0" -module-cache-path "$cache_dir" \
   -framework AppKit Sources/main.swift -o "$app_dir/MacOS/KandoHaptics"
 cat > "$app_dir/Info.plist" <<'PLIST'

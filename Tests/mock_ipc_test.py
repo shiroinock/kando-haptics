@@ -2,6 +2,7 @@ import base64
 import hashlib
 import json
 import pathlib
+import os
 import socket
 import struct
 import subprocess
@@ -9,7 +10,7 @@ import tempfile
 import time
 
 root = pathlib.Path(__file__).resolve().parents[1]
-binary = root / 'Kando Haptics.app/Contents/MacOS/KandoHaptics'
+binary = pathlib.Path(os.environ.get('KANDO_HAPTICS_TEST_BINARY', str(root / 'Kando Haptics.app/Contents/MacOS/KandoHaptics')))
 
 def exact(connection, length):
     result = b''

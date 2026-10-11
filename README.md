@@ -65,7 +65,21 @@ open "Kando Haptics.app"
 bash scripts/package-release.sh
 ```
 
-一時ディレクトリでビルド・ルーティングテスト・署名検証を実行し、`dist/` にアプリだけを含むZIPと `SHA256SUMS.txt` を生成します。アプリ内にMITライセンスを同梱します。生成物はGit管理対象外です。
+Python 3も必要です。一時ディレクトリでビルド・ルーティングテスト・ZIP展開後の署名検証・模擬WebSocket連携テストを実行し、`dist/` にアプリだけを含むZIPと `SHA256SUMS.txt` を生成します。アプリ内にMITライセンスを同梱します。生成物はGit管理対象外です。
+
+## タグから自動リリース
+
+`VERSION` を次のバージョンに更新し、その変更をコミットしてpushしたあと、同じバージョンのタグをpushします。
+
+```sh
+# 例: VERSIONを0.1.2へ更新してコミット・pushしたあと
+git tag v0.1.2
+git push origin v0.1.2
+```
+
+`v*` タグのpushでGitHub ActionsがApple Silicon runner（`macos-15`）上でビルド・テストを実行し、GitHub ReleasesへZIPとSHA-256を自動添付します。タグは `vX.Y.Z` 形式で、`VERSION` と一致する必要があります。検証に失敗した場合は公開しません。同じrunの再実行にも対応します。
+
+追加のSecretsは不要です。リリース公開にはジョブの `GITHUB_TOKEN` と `contents: write` を使用します。配布バイナリは引き続きad-hoc署名です。
 
 ## 調査元
 
